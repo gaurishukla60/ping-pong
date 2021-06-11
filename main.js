@@ -20,27 +20,56 @@ var ball = {
     dx:3,
     dy:3
 }
+rightWristX=0;
+rightWristY=0;
+game_status="";
+
+function preload()
+{
+ball_touch_paddle=loadSound("ball_touch_paddle.wav");
+missed=loadSound("missed.wav");
+}
 
 function setup(){
-  var canvas =  createCanvas(700,600);
-  canvas.parent('canvas');
+ var canvas =createCanvas(700,600);
+ canvas.parent('canvas');
+  video=createCapture(VIDEO);
+  video.size(600,300);
+  video.hide();
+  poseNet=ml5.poseNet(video,modelLoaded);
+  poseNet.on('pose',gotposes);
+}
+function gotposes(results)
+{
+  if(results.length > 0)
+    {
+      rightWristX=results[0].pose.rightWrist.x;
+      rightWristY=results[0].pose.rightWrist.y;
+      console.log("rightWristx= " + rightWristX + " rightWristy= " + rightWristY);
+
+    }
+}
+function startGame()
+{
+  game_status="start";
+  document.getElementById("status").innerHTML="game is Loaded";
 }
 
 
 function draw(){
+if(game_status=="start")
+{
+  background(0); 
 
- background(0); 
-
- fill("black");
- stroke("black");
- rect(680,0,20,700);
-
- fill("black");
- stroke("black");
- rect(0,0,20,700);
+  fill("black");
+  stroke("black");
+  rect(680,0,20,700);
  
-   //funtion paddleInCanvas call 
-   paddleInCanvas();
+  fill("black");
+  stroke("black");
+  rect(0,0,20,700);
+
+  paddleInCanvas();
  
    //left paddle
    fill(250,0,0);
@@ -66,6 +95,9 @@ function draw(){
    
    //function move call which in very important
     move();
+}
+   //funtion paddleInCanvas call 
+    
 }
 
 
