@@ -26,20 +26,23 @@ game_status="";
 
 function preload()
 {
-ball_touch_paddle=loadSound("ball_touch_paddle.wav");
+ball_touch_paddle=loadSound("ball_touch_paddel.wav");
 missed=loadSound("missed.wav");
 }
 
-function setup(){
- var canvas =createCanvas(700,600);
- canvas.parent('canvas');
-  video=createCapture(VIDEO);
-  video.size(600,300);
-  video.hide();
-  poseNet=ml5.poseNet(video,modelLoaded);
-  poseNet.on('pose',gotposes);
-}
-function gotposes(results)
+function setup()
+{ 
+  var canvas = createCanvas(700,600);
+   canvas.parent('can');
+    video = createCapture(VIDEO);
+     video.size(700, 600);
+      video.hide();
+       poseNet = ml5.poseNet(video, modelLoaded);
+        poseNet.on('pose', gotPoses);
+       }
+
+
+function gotPoses(results)
 {
   if(results.length > 0)
     {
@@ -49,6 +52,12 @@ function gotposes(results)
 
     }
 }
+
+function modelLoaded()
+  {
+    console.log("modelLoaded");
+  }
+
 function startGame()
 {
   game_status="start";
